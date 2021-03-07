@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Chat</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/styles.css">
+
+</head>
+
+<body>
+    <div id="messages_history"></div>
+    <form id= 'chat' action="">
+        <input type="text" id="message_text" name="message_text">
+        <input type="submit" value="Send message!">
+    </form>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+    <script type="text/javascript">
+        var socket = io.connect();
+
+        $("form#chat").submit((e) => {
+            e.preventDefault();
+
+            socket.emit("send message", $(this).find('#message_text').val(), () => {
+                $("form#chat #message_text").val("");
+            });
+
+        });
+
+        socket.on("update messages", () => {
+            var formattedMessage = $("<p />").text(message);
+            $("#messages_history").append(formattedMessage);
+        });
+    </script>
+
+</body>
+
+</html>
