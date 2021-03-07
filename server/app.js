@@ -29,7 +29,7 @@ function response(req, res) {
 
 io.on("connection", (socket)=>{
     socket.on("send message", (message_sent, callback)=>{
-        message_sent = "[" + cathActualDate() * "]:" + message_sent;
+        message_sent = "[" + cathActualDate() +  "]:" + message_sent;
 
         io.sockets.emit("update messages", message_sent);
         
