@@ -8,7 +8,6 @@ console.log("Application on air...");
 
 function response(req, res) {
     var archive = "";
-
     if (req.url == "/") {
         archive = path.resolve('interface/index.html'); 
     } else {
@@ -17,7 +16,7 @@ function response(req, res) {
 
     fs.readFile(archive, (err, data)=>{
         if (err) {
-            res.writeHead(500);
+            res.writeHead(404);
             return res.end('Error to load page.');
         }
 
@@ -25,14 +24,15 @@ function response(req, res) {
         res.end(data);
     });
 
-}
+};
 
-io.on("connection", (socket)=>{
+
+
+io.on("connection", socket => {
     socket.on("send message", (message_sent, callback)=>{
         message_sent = "[" + cathActualDate() +  "]:" + message_sent;
 
         io.sockets.emit("update messages", message_sent);
-        
         callback();
     });
 });
