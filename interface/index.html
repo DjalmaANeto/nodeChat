@@ -25,12 +25,11 @@
     <script type="text/javascript">
         var socket = io.connect();
 
-        $("form#chat").submit( e => {
+        $("form#chat").submit(function (e) {
             e.preventDefault();
-            socket.emit("send message", $(this).find("#message_text").val(), ()=> {
+            socket.emit("send message", $(this).find("#message_text").val(), function () {
                 $("form#chat #message_text").val("");
             });
-
         });
 
         socket.on("update messages", message => {
