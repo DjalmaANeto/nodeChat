@@ -36,9 +36,50 @@ form input[type='submit']{
     /* width: 19%; */
 }
 
-#messages_history{
-    background: #fff;
-    border: 2px solid #45c5bf;
-    border-radius: 5px;
+#messages_history, #guideline{
+    background: #FFF;
+    border:2px solid #45C5BF;
     height: 550px;
+    float:left;
+    margin-bottom: 10px;
+    width:75%;
+}
+
+#messages_history .system{
+    background-color: #45C5BF;
+    color: #FFF;
+    font-weight: bold;
+}
+
+#messages_history .private{
+    background-color: #CCC;
+    color: #000;
+    font-weight: bold;
+}
+
+#chat_room{
+    display: none;
+}
+
+#user_access{
+    height:30px;
+    left:50%;
+    margin-left:-160px;
+    margin-top:-15px;
+    position: fixed;
+    top:50%;
+    width:320px;
+}
+
+#user_access form{
+    margin:0;
+}
+
+#messages_history{
+    border-right: 0;
+}
+#guideline{
+border-left: 1px solid #45C5BF;
+    height: 554px;
+    width: 20%;
 }

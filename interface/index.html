@@ -7,34 +7,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Node Chat</title>
 
-    <link rel="stylesheet" type="text/css" href="styles/styles.css">
+    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
 
 </head>
 
 <body>
-    <div id="messages_history"></div>
-    <form id="chat">
-        <input type="text" id="message_text" name="message_text" />
-        <input type="submit" value="Send message!" />
-    </form>
+    <div id='user_access'>
+        <form id='login'>
+            <input type='text' placeholder='Insert your nickname' name='nickname' id='nickname' />
+            <input type='submit' value='enter' />
+        </form>
+    </div>
+
+    <div id="chat_room">
+        <div id="messages_history"></div>
+
+        <select multiple="multiple" id='guideline'>
+            <option value=''>All</option>
+        </select>
+
+        <form id="chat">
+            <input type="text" id="message_text" name="message_text" />
+            <input type="submit" value="Send message!" />
+        </form>
+    </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
     <script type="text/javascript">
         var socket = io.connect();
 
         $("form#chat").submit(function (e) {
             e.preventDefault();
-            socket.emit("send message", $(this).find("#message_text").val(), function () {
+
+            var message= $(this).find("#message_text").val();
+            var user = $("#guideline").val();
+
+            socket.emit("send message", { msg: message, usu: user }, function () {
                 $("form#chat #message_text").val("");
+            });
+
+        });
+
+        socket.on("update messages", data => {
+            var formattedMessage = $("<p />").text(data.msg).addClass(data.type);
+            $("#messages_history").append(formattedMessage);
+        });
+
+        $("form#login").submit(function (e) {
+            e.preventDefault();
+
+            socket.emit("enter", $(this).find("#nickname").val(), function (valid) {
+                if (valid) {
+                    $("#user_access").hide();
+                    $("#chat_room").show();
+                } else {
+                    $("#user_access").val("");
+                    alert("This name already exists!");
+                }
             });
         });
 
-        socket.on("update messages", message => {
-            var formattedMessage = $("<p />").text(message);
-            $("#messages_history").append(formattedMessage);
+        socket.on("update users", function (users) {
+            $("#guideline").empty();
+            $("#guideline").append("<option value=''>All</option>");
+            $.each(users, function (index) {
+                var user_option = $("<option />").text(users[index]);
+                $("#guideline").append(user_option);
+            });
         });
     </script>
 
