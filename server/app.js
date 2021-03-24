@@ -60,7 +60,7 @@ io.on("connection", socket => {
             user = '';
 
         message_sent = "[ " + cathActualDate() + " ] " + socket.nickname + " says: " + message_sent;
-        var message_obj = {msg: message_sent, type=""}
+        var message_obj = {msg: message_sent, type: ''}
 
         if (user == '') {
             io.sockets.emit("update messages", message_obj);
